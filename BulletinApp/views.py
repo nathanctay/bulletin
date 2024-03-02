@@ -62,9 +62,31 @@ def comment(request, id):
         Comment()
 
 def explore(request, distance):
+    # Retrieve the current user
     current_user = request.user
-    user_latitude = current_user.latitude
-    user_longitude = current_user.longitude
-    bullet_list = []
-    for b in Bulletin.objects.all():
-        distance = user_l
+
+    # Get the user's location
+    user_location = (current_user.latitude, current_user.longitude)
+
+    # Calculate distances and filter bulletin boards
+    bulletin_boards = []
+    for bulletin in Bulletin.objects.all():
+        # Get bulletin board location
+        bulletin_location = (bulletin.latitude, bulletin.longitude)
+        
+        # Calculate distance from user to bulletin board
+        bulletin_distance = geodesic(user_location, bulletin_location).miles
+        
+        # Check if distance is within the specified range
+        if bulletin_distance <= distance:
+            bulletin_boards.append((bulletin, bulletin_distance))
+
+    # Sort bulletin boards by distance
+    bulletin_boards.sort(key=lambda x: x[1])
+
+    # Pass the sorted list of bulletin boards to the template
+    context = {
+        'bulletin_boards': bulletin_boards,
+    }
+
+    return render(request, 'explore.html', context) 
