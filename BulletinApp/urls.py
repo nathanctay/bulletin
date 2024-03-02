@@ -1,5 +1,5 @@
 from . import views
-from django.urls import path
+from django.urls import path, include
 
 app_name='bulletin'
 urlpatterns = [
@@ -7,8 +7,9 @@ urlpatterns = [
     path('register', views.register, name="register"),
     path('registerUser', views.registerUser, name="registerUser"),
     path('login', views.login, name="login"),
-        path('loginUser', views.loginUser, name="loginUser"),
-
+    path('loginUser', views.loginUser, name="loginUser"),
+    path('bulletin/<str:id>', views.bulletin, name="bulletin"),
     path('<str:id>', views.post, name="post"),
-    path('<str:id>/comment', views.comment, name="comment")
+    path('<str:id>/comment', views.comment, name="comment"),
+
 ]

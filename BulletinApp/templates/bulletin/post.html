@@ -11,37 +11,78 @@
 </head>
 
 <body>
-    <div class="container">
-    <div class="row">
-        <div class="col-10">
-            {% if post %}
+    <!-- <div class="container"> -->
+    <div class="row d-flex-vertical">
+        <div class="col-2 text-center side-nav flex-fill">
+            <!-- <div class="row justify-content-center align-items-center"> -->
+            <h1>Your Bulletins</h1>
+            {% if bulletins %}
+            {% for bulletin in bulletins %}
+
+            <a id="bulletin" class="bulletin-list-item" href="{% url 'bulletin:bulletin' bulletin.id %}">
+                <div class="p-3">
+                    <img src="{{ bulletin.bulletin_picture.url }}" class="rounded-circle img-fluid" />
+                    <p>{{ bulletin.title }}</p>
+                </div>
+            </a>
+            {% endfor %}
+            {% endif %}
+            <!-- </div> -->
+
+        </div>
+        <div class="col-8">
+            <div class="bulletin-heading p-2">
+                <div class="row align-items-center h-100">
+                    <div class="col-4">
+                        <h1>{{ bulletin.title }}</h1>
+                    </div>
+                    <div class="col-4">
+                        <h1>Location</h1>
+                    </div>
+                    <div class="col-4">
+                        <h1>Soemthing else idk</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 bulletin d-flex-vertical ">
+                {% if post %}
                 <h1>{{ post.title }}</h1>
                 <p class="lead p-0 m-0">{{ post.creator }}</p>
-                <h2 class="p-0 m-0">{{ post.title }}</h2>
                 <p>{{ post.pub_date }}</p>
                 <p>{{ post.content }}</p>
                 <!-- <p>{{ post.id }}</p> -->
-            {% endif %}
+                {% endif %}
 
-            <h2>Comments</h2>
-            <form method="POST" action="{% url 'bulletin:comment' post.id %}">
-                {% csrf_token %}
-                <label for="commenter">Name: </label> 
-                <input type="text" name="commenter" required> <br>
-                <textarea rows="4" cols="50" placeholder="Comment" name="content" required></textarea> <br>
-                <input type="submit" value="comment">
-            </form>
-            {% if comments %}
+                <h2>Comments</h2>
+                <form method="POST" action="{% url 'bulletin:comment' post.id %}">
+                    {% csrf_token %}
+                    <textarea rows="2" cols="50" placeholder="Comment" name="content" class="form-control"></textarea>
+                    <br>
+                    <input type="submit" value="comment" class="btn btn-primary">
+                </form>
+                {% if comments %}
                 {% for comment in comments %}
-                <div class="border my-2 p-2"> 
+                <div class="border my-2 p-2">
                     <h3>{{ comment.creator }}</h3>
                     <p>{{ comment.pub_date }}</p>
                     <p class="lead">{{ comment.content }}</p>
                 </div>
                 {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-2 side-nav text-center flex-fill">
+            <h1>Members</h1>
+            {% if members %}
+            {% for member in members %}
+            <div class="p-3 text-center ">
+                <img src="{{ member.profile_picture.url }}" class="rounded-circle img-fluid" />
+                <p>{{ member.first_name }} {{ member.last_name }}</p>
+            </div>
+            {% endfor %}
             {% endif %}
         </div>
-    </div>
+        <!-- </div> -->
     </div>
 
 </body>

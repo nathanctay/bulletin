@@ -1,5 +1,30 @@
+.bulletin-heading {
+    background-color: #FFE4C4;
+}
 .bulletin {
-    background-color: rgb(220, 207, 190);
+    background-color: #FAEBD7;
     text-decoration: none;
     color: black;
+}
+.bulletin-list-item {
+    text-decoration: none;
+    color: black;
+}
+
+.bulletin-list-item:hover {
+    text-decoration: underline;
+}
+
+.bulletin-post {
+    background-color: white;
+    text-decoration: none;
+    color: black;
+}
+
+.bulletin-post-title:hover {
+    text-decoration: underline;
+}
+
+.side-nav {
+    background-color: lightgray;
 }

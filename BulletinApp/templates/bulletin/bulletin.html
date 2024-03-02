@@ -16,6 +16,8 @@
         <div class="col-2 text-center side-nav flex-fill">
             <!-- <div class="row justify-content-center align-items-center"> -->
             <h1>Your Bulletins</h1>
+            <a class="btn btn-primary" href="#">Create Bulletin</a>
+
             {% if bulletins %}
             {% for bulletin in bulletins %}
 
@@ -44,33 +46,37 @@
                     </div>
                 </div>
             </div>
-            <div class="py-4 bulletin d-flex-vertical">
-                <div class="row">
-                {% if posts %}
-                {% for post in posts %}
-                <div class="col-6">
-                <a id="post" class="bulletin-post" href="{% url 'bulletin:post' post.id %}">
-                    <div class="m-3 p-2 bg-white">
-                        <p class="lead p-0 m-0">{{ post.creator }}</p>
-                        <h2 class="p-0 m-0">{{ post.title }}</h2>
-                        <p>{{ post.pub_date }}</p>
-                        <p>{{ post.content | truncatechars:200}}</p>
-                    </div>
-                </a>
+            <div class="py-4 bulletin col d-flex-vertical">
+                <div class="row px-5">
+                    <a class="btn btn-primary" href="#">Create Post</a>
                 </div>
-                {% endfor %}
-                {% endif %}
-            </div>
+                <div class="row">
+
+                    {% if posts %}
+                    {% for post in posts %}
+                    <div class="col-6">
+                        <a id="post" class="bulletin-post" href="{% url 'bulletin:post' post.id %}">
+                            <div class="m-3 p-2 bg-white">
+                                <p class="lead p-0 m-0">{{ post.creator }}</p>
+                                <h2 class="p-0 m-0">{{ post.title }}</h2>
+                                <p>{{ post.pub_date }}</p>
+                                <p>{{ post.content | truncatechars:200}}</p>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
             </div>
         </div>
         <div class="col-2 side-nav text-center flex-fill">
             <h1>Members</h1>
             {% if members %}
             {% for member in members %}
-                <div class="p-3 text-center ">
-                    <img src="{{ member.profile_picture.url }}" class="rounded-circle img-fluid" />
-                    <p>{{ member.first_name }} {{ member.last_name }}</p>
-                </div>
+            <div class="p-3 text-center ">
+                <img src="{{ member.profile_picture.url }}" class="rounded-circle img-fluid" />
+                <p>{{ member.first_name }} {{ member.last_name }}</p>
+            </div>
             {% endfor %}
             {% endif %}
         </div>

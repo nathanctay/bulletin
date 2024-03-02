@@ -5,12 +5,18 @@ from django.utils import timezone
 from .models import *
 from django.contrib.auth import authenticate
 from geopy.distance import geodesic
+from django.contrib.auth import logout
 
 
 # Create your views here.
 def index(request):
+    user = request.user
     posts = Post.objects.order_by('-pub_date')
-    context = {'posts': posts}
+    bulletins = user.bulletin_list.all()
+    # print(bulletins)
+    print(user)
+    # bulletins = Bulletin.objects.all()
+    context = {'bulletins' : bulletins, 'posts': posts, 'user':user}
     return render(request, 'bulletin/index.html', context)
 
 def register(request):
@@ -30,7 +36,9 @@ def registerUser(request):
     return HttpResponseRedirect(reverse('bulletin:index'))
 
 def login(request):
-    return render(request, 'bulletin/login')
+    logout(request)
+    return render(request, 'bulletin/login.html')
+
 
 def loginUser(request):
     try:
@@ -45,22 +53,38 @@ def loginUser(request):
     else:
         return HttpResponseRedirect(reverse('bulletin:login'))
 
+def bulletin(request, id):
+    user = request.user
+    bulletin = get_object_or_404(Bulletin, id__startswith=id)
+    bulletins = user.bulletin_list.all()
+    members = bulletin.users.all()
+    posts = Post.objects.filter(bulletin=bulletin)
+    context = {'bulletins': bulletins, 'posts': posts, 'bulletin': bulletin, 'members': members}
+    return render(request, 'bulletin/bulletin.html', context)
 
 def post(request, id):
+    user = request.user
+    bulletins = user.bulletin_list.all()
     post = get_object_or_404(Post, id__startswith=id)
+    bulletin = post.bulletin
+    members = bulletin.users.all()
+    # print(members)
+    print(bulletin)
     comments = Comment.objects.filter(post=post)
-    context = {'post': post, 'comments': comments}
+    context = {'bulletins': bulletins, 'bulletin': bulletin, 'post': post, 'comments': comments,'members': members}
     return render(request, 'bulletin/post.html', context)
 
 def comment(request, id):
+    user = request.user
     post = get_object_or_404(Post, id__startswith=id)
     try:
-        commenter = request.POST['commenter']
         content = request.POST['content']
     except (KeyError, Comment.DoesNotExist):
         return
     else:
-        Comment()
+        Comment(creator = user, content = content, post = post, pub_date = timezone.now()).save()
+        return HttpResponseRedirect(reverse(f'bulletin:post', args=(id,)))
+    
 
 def explore(request, distance):
     # Retrieve the current user
