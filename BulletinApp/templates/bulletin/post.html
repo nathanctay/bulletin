@@ -16,6 +16,8 @@
         <div class="col-2 text-center side-nav flex-fill">
             <!-- <div class="row justify-content-center align-items-center"> -->
             <h1>Your Bulletins</h1>
+            <a class="btn btn-primary" href="#">Create Bulletin</a>
+
             {% if bulletins %}
             {% for bulletin in bulletins %}
 
@@ -62,7 +64,7 @@
                 </form>
                 {% if comments %}
                 {% for comment in comments %}
-                <div class="border my-2 p-2">
+                <div class="border my-2 p-2 bg-white">
                     <h3>{{ comment.creator }}</h3>
                     <p>{{ comment.pub_date }}</p>
                     <p class="lead">{{ comment.content }}</p>

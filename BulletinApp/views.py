@@ -6,6 +6,7 @@ from .models import *
 from django.contrib.auth import authenticate
 from geopy.distance import geodesic
 from django.contrib.auth import logout
+from .forms import *
 
 
 # Create your views here.
@@ -13,9 +14,7 @@ def index(request):
     user = request.user
     posts = Post.objects.order_by('-pub_date')
     bulletins = user.bulletin_list.all()
-    # print(bulletins)
     print(user)
-    # bulletins = Bulletin.objects.all()
     context = {'bulletins' : bulletins, 'posts': posts, 'user':user}
     return render(request, 'bulletin/index.html', context)
 
@@ -115,3 +114,47 @@ def explore(request, distance):
     }
 
     return render(request, 'explore.html', context) 
+
+def bulletinEdit(request, bulletinId = None):
+    user = request.user
+    bulletins = user.bulletin_list.all()
+
+    if bulletinId is not None:
+        bulletin = Bulletin.objects.get(id = bulletinId)
+        initial_form = {"bulletin_name": bulletin.title, "description": bulletin.description, 'bulletin_picture': bulletin.bulletin_picture}
+    else:
+        initial_form = {"bulletin_name": '', "description": '', 'bulletin_picture': ''}
+    
+
+    if request.method == "POST":
+        
+    # else:
+        # context[initial_list] = [{"bulletin_name": '', "description": '',}]
+        form = BulletinForm(request.POST, request.FILES, initial=initial_form)
+        if form.is_valid():
+            name = form.cleaned_data.get("bulletin_name")
+            description = form.cleaned_data.get("description")
+            bulletin_picture = form.cleaned_data.get("pic_field")
+            bulletin = Bulletin.objects.create(creator = user, title = name,bulletin_picture = bulletin_picture, description = description,  latitude = 0, longitude = 0, )
+            bulletin.users.add(user)
+            bulletin.save()
+    else:
+        form = BulletinForm(initial=initial_form)
+
+    context = {'bulletins' : bulletins, 'user':user, 'form': form}
+    
+    
+    return render(request, 'bulletin/bulletin-edit.html', context)
+
+def saveBulletin(request):
+    user = request.user
+    if request.method == "POST":
+        form = BulletinForm(request.POST, request.FILES)
+        if form.is_valid():
+            name = form.cleaned_data.get("name")
+            description = form.cleaned_data.get("description")
+            bulletin_picture = form.cleaned_data.get("pic_field")
+            Bulletin.objects.create(creator = user, title = name,bulletin_picture = bulletin_picture, description = description,  latitude = 0, longitude = 0).save()
+    else:
+        form = BulletinForm()
+    return 

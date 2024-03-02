@@ -16,7 +16,7 @@
         <div class="col-2 text-center side-nav flex-fill">
             <!-- <div class="row justify-content-center align-items-center"> -->
             <h1>Your Bulletins</h1>
-            <a class="btn btn-primary" href="#">Create Bulletin</a>
+            <a class="btn btn-primary" href="{% url 'bulletin:bulletin-new' %}">Create Bulletin</a>
 
             {% if bulletins %}
             {% for bulletin in bulletins %}
@@ -37,6 +37,8 @@
                 <div class="row align-items-center h-100">
                     <div class="col-4">
                         <h1>{{ bulletin.title }}</h1>
+                        <a class="btn btn-primary" href="{% url 'bulletin:bulletin-edit' bulletin.id %}">Edit Bulletin</a>
+
                     </div>
                     <div class="col-4">
                         <h1>Location</h1>
