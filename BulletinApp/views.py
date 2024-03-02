@@ -20,7 +20,7 @@ def registerUser(request):
     try:
         firstName = request.POST['first_name']
         lastName = request.POST['last_name']
-        email = request.POST['email']
+        email = request.POST['email'] 
         password = request.POST['password']
     except (KeyError, User.DoesNotExist):
         return

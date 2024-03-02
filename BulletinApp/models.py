@@ -22,7 +22,14 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.first_name + " " + self.last_name
-    
+
+class Tag(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name 
+
 class Bulletin(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -31,18 +38,12 @@ class Bulletin(models.Model):
     longitude = models.FloatField(blank=True)
     bulletin_picture = models.ImageField(upload_to='bulletin_pictures/')
     description = models.CharField(max_length=500, blank=True)
-    models.ManyToManyField(CustomUser, related_name="user_list")
+    tags = models.ManyToManyField(Tag, blank=True)
+    users = models.ManyToManyField(CustomUser, related_name="bulletin_list")
 
     def __str__(self):
         return self.title
-    
-class Tag(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name
-    
+        
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=200)
@@ -51,7 +52,7 @@ class Post(models.Model):
     creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     content = models.TextField()
     pub_date = models.DateTimeField()
-    tags = models.ManyToManyField(Tag, blank=True)
+    hasEvent = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -68,8 +69,6 @@ class Event(models.Model):
     def __str__(self):
         return self.title
     
-
-
 
 class Comment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
