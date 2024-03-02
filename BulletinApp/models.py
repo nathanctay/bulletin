@@ -25,6 +25,7 @@ class Bulletin(models.Model):
     latitude = models.FloatField(blank=True)
     longitude = models.FloatField(blank=True)
     bulletin_picture = models.ImageField(upload_to='bulletin_pictures/')
+    description = models.CharField(max_length=500, blank=True)
     models.ManyToManyField(CustomUser, related_name="user_list")
 
     def __str__(self):
