@@ -11,8 +11,8 @@ class CustomUser(AbstractUser):
     last_name = models.CharField(max_length=50)
     profile_picture = models.ImageField(upload_to='profile_pictures/')
     email = models.EmailField(unique=True)    
-    latitude = models.FloatField(db_index=True)
-    longitude = models.FloatField(db_index=True)
+    latitude = models.FloatField(blank=True)
+    longitude = models.FloatField(blank=True)
     # Add more fields as needed
 
     def __str__(self):
@@ -21,10 +21,10 @@ class CustomUser(AbstractUser):
 class Bulletin(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    bulletin_picture = models.ImageField(upload_to='bulletin_pictures/')
     title = models.CharField(max_length=200)
     latitude = models.FloatField(blank=True)
     longitude = models.FloatField(blank=True)
+    bulletin_picture = models.ImageField(upload_to='bulletin_pictures/')
     models.ManyToManyField(CustomUser, related_name="user_list")
 
     def __str__(self):
