@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{{ bulletin.title }}</title>
+    <title> Edit Bulletin</title>
     <link rel="stylesheet" href="{% static 'bulletin/style.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -36,39 +36,24 @@
             <div class="bulletin-heading h-25 p-2">
                 <div class="row align-items-center h-100">
                     <div class="col-4">
-                        <h1>{{ bulletin.title }}</h1>
-                        <a class="btn btn-primary" href="{% url 'bulletin:bulletin-edit' bulletin.id %}">Edit Bulletin</a>
-
+                        <h1>Bulletin</h1>
                     </div>
                     <div class="col-4">
                         <h1>Location</h1>
                     </div>
                     <div class="col-4">
-                        <h1>{{ bulletin.description }}</h1>
+                        <h1>Soemthing else idk</h1>
                     </div>
                 </div>
             </div>
-            <div class="py-4 bulletin col d-flex-vertical">
-                <div class="row px-5">
-                    <a class="btn btn-primary" href="#">Create Post</a>
-                </div>
-                <div class="row">
-
-                    {% if posts %}
-                    {% for post in posts %}
-                    <div class="col-6">
-                        <a id="post" class="bulletin-post" href="{% url 'bulletin:post' post.id %}">
-                            <div class="m-3 p-2 bg-white">
-                                <p class="lead p-0 m-0">{{ post.creator }}</p>
-                                <h2 class="p-0 m-0">{{ post.title }}</h2>
-                                <p>{{ post.pub_date }}</p>
-                                <p>{{ post.content | truncatechars:200}}</p>
-                            </div>
-                        </a>
+            <div class="p-4 bulletin col d-flex-vertical">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form.as_p }}
                     </div>
-                    {% endfor %}
-                    {% endif %}
-                </div>
+                    <input type="submit" value="Save" class="btn btn-primary">
+                </form>
             </div>
         </div>
         <div class="col-2 side-nav text-center flex-fill">

@@ -135,8 +135,13 @@ def bulletinEdit(request, bulletinId = None):
             name = form.cleaned_data.get("bulletin_name")
             description = form.cleaned_data.get("description")
             bulletin_picture = form.cleaned_data.get("pic_field")
-            bulletin = Bulletin.objects.create(creator = user, title = name,bulletin_picture = bulletin_picture, description = description,  latitude = 0, longitude = 0, )
-            bulletin.users.add(user)
+            if (bulletinId is None):
+                bulletin = Bulletin.objects.create(creator = user, title = name,bulletin_picture = bulletin_picture, description = description, latitude = 0, longitude = 0 )
+                bulletin.users.add(user)
+            else:
+                bulletin.title = name
+                bulletin.description = description
+                bulletin.bulletin_picture = bulletin_picture
             bulletin.save()
     else:
         form = BulletinForm(initial=initial_form)
@@ -145,16 +150,3 @@ def bulletinEdit(request, bulletinId = None):
     
     
     return render(request, 'bulletin/bulletin-edit.html', context)
-
-def saveBulletin(request):
-    user = request.user
-    if request.method == "POST":
-        form = BulletinForm(request.POST, request.FILES)
-        if form.is_valid():
-            name = form.cleaned_data.get("name")
-            description = form.cleaned_data.get("description")
-            bulletin_picture = form.cleaned_data.get("pic_field")
-            Bulletin.objects.create(creator = user, title = name,bulletin_picture = bulletin_picture, description = description,  latitude = 0, longitude = 0).save()
-    else:
-        form = BulletinForm()
-    return 
