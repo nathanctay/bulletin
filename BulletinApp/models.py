@@ -21,8 +21,9 @@ class Bulletin(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
-    latitude = models.FloatField(db_index=True)
-    longitude = models.FloatField(db_index=True)
+    latitude = models.FloatField(db_index=True, blank=True)
+    longitude = models.FloatField(db_index=True, blank=True)
+    models.ManyToManyField(CustomUser, related_name="user_list")
 
     def __str__(self):
         return self.title
