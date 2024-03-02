@@ -23,7 +23,7 @@ class Post(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     pub_date = models.DateTimeField()
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, null=True, blank=True)
 
     def __str__(self):
         return self.title
