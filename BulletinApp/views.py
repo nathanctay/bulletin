@@ -6,6 +6,7 @@ from .models import *
 from django.contrib.auth import authenticate
 from geopy.distance import geodesic
 
+
 # Create your views here.
 def index(request):
     posts = Post.objects.order_by('-pub_date')
@@ -20,7 +21,7 @@ def registerUser(request):
     try:
         firstName = request.POST['first_name']
         lastName = request.POST['last_name']
-        email = request.POST['email'] 
+        email = request.POST['email']
         password = request.POST['password']
     except (KeyError, User.DoesNotExist):
         return
