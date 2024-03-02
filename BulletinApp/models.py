@@ -1,6 +1,7 @@
 from django.db import models
 import datetime
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Bulletin(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -9,7 +10,13 @@ class Bulletin(models.Model):
 
     def __str__(self):
         return self.title
+    
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.name
+    
 class Post(models.Model):
     title = models.CharField(max_length=200)
     bulletin = models.ForeignKey(Bulletin, on_delete=models.CASCADE)
@@ -33,14 +40,10 @@ class Event(models.Model):
         return self.title
     
 
-class Tag(models.Model):
-    name = models.CharField(max_length=50)
 
-    def __str__(self):
-        return self.name
 
 class Comment(models.Model):
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     pub_date = models.DateTimeField()
