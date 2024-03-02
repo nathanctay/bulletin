@@ -16,7 +16,7 @@
         <div class="col-2 text-center side-nav flex-fill">
             <!-- <div class="row justify-content-center align-items-center"> -->
             <h1>Your Bulletins</h1>
-            <a class="btn btn-primary" href="#">Create Bulletin</a>
+            <a class="btn btn-primary" href="{% url 'bulletin:bulletin-new' %}">Create Bulletin</a>
 
             {% if bulletins %}
             {% for bulletin in bulletins %}
@@ -48,7 +48,11 @@
             </div>
             <div class="p-4 bulletin d-flex-vertical ">
                 {% if post %}
-                <h1>{{ post.title }}</h1>
+                <div class="row">
+                    <p class="d-inline-block">{{ post.title }}</p>
+                    <p class="d-inline-block">Hello</p>
+                    <a class="btn btn-primary" href="{% url 'bulletin:post-edit' bulletin.id post.id%}">Edit Post</a>
+                </div>
                 <p class="lead p-0 m-0">{{ post.creator }}</p>
                 <p>{{ post.pub_date }}</p>
                 <p>{{ post.content }}</p>

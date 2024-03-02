@@ -121,15 +121,11 @@ def bulletinEdit(request, bulletinId = None):
 
     if bulletinId is not None:
         bulletin = Bulletin.objects.get(id = bulletinId)
-        initial_form = {"bulletin_name": bulletin.title, "description": bulletin.description, 'bulletin_picture': bulletin.bulletin_picture}
+        initial_form = {"bulletin_name": bulletin.title, "description": bulletin.description, 'pic_field': bulletin.bulletin_picture}
     else:
-        initial_form = {"bulletin_name": '', "description": '', 'bulletin_picture': ''}
+        initial_form = {"bulletin_name": '', "description": '', 'pic_field': ''}
     
-
     if request.method == "POST":
-        
-    # else:
-        # context[initial_list] = [{"bulletin_name": '', "description": '',}]
         form = BulletinForm(request.POST, request.FILES, initial=initial_form)
         if form.is_valid():
             name = form.cleaned_data.get("bulletin_name")
@@ -143,10 +139,40 @@ def bulletinEdit(request, bulletinId = None):
                 bulletin.description = description
                 bulletin.bulletin_picture = bulletin_picture
             bulletin.save()
+            # outcome = HttpResponseRedirect(reverse('bulletin:bulletin', args=(bulletin.id)))
     else:
         form = BulletinForm(initial=initial_form)
 
     context = {'bulletins' : bulletins, 'user':user, 'form': form}
+    outcome = render(request, 'bulletin/bulletin-edit.html', context)
+    return outcome
+
+
+def postEdit(request, bulletinId, postId = None):
+    user = request.user
+    bulletins = user.bulletin_list.all()
+    bulletin = Bulletin.objects.get(id = bulletinId)
+    if postId is not None:
+        post = Post.objects.get(id = postId)
+        initial_form = {"post_name": post.title, "description": post.content, 'pic_field': post.post_picture}
+    else:
+        initial_form = {"post_name": '', "description": '', 'pic_field': ''}
     
-    
-    return render(request, 'bulletin/bulletin-edit.html', context)
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES, initial=initial_form)
+        if form.is_valid():
+            name = form.cleaned_data.get("post_name")
+            description = form.cleaned_data.get("description")
+            post_picture = form.cleaned_data.get("pic_field")
+            if (postId is None):
+                post = Post.objects.create(creator = user, title = name,post_picture = post_picture, content = description, bulletin = bulletin, pub_date = timezone.now() )
+            else:
+                post.title = name
+                post.content = description
+                post.post_picture = post_picture
+            post.save()
+    else:
+        form = PostForm(initial=initial_form)
+
+    context = {'bulletins' : bulletins, 'user':user, 'form': form}
+    return render(request, 'bulletin/post-edit.html', context)
