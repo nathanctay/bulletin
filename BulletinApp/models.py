@@ -15,6 +15,11 @@ class CustomUser(AbstractUser):
     longitude = models.FloatField(blank=True)
     # Add more fields as needed
 
+    def save(self, *args, **kwargs):
+        # Set the username to be the email address
+        self.username = self.email
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.first_name + " " + self.last_name
     
