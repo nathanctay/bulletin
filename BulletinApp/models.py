@@ -3,6 +3,8 @@ import datetime
 from django.utils import timezone
 from django.contrib.auth.models import User
 import uuid
+from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 class Bulletin(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -27,7 +29,7 @@ class Post(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     pub_date = models.DateTimeField()
-    tags = models.ManyToManyField(Tag, null=True, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True)
 
     def __str__(self):
         return self.title
@@ -58,3 +60,13 @@ class Comment(models.Model):
         return self.content[:45]
     
 
+class CustomUser(AbstractUser):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    email = models.EmailField(unique=True)    
+    latitude = models.FloatField(db_index=True)
+    longitude = models.FloatField(db_index=True)
+    # Add more fields as needed
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name
