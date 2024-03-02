@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from .models import *
 from django.contrib.auth import authenticate
+from geopy.distance import geodesic
 
 # Create your views here.
 def index(request):
@@ -59,3 +60,11 @@ def comment(request, id):
         return
     else:
         Comment()
+
+def explore(request, distance):
+    current_user = request.user
+    user_latitude = current_user.latitude
+    user_longitude = current_user.longitude
+    bullet_list = []
+    for b in Bulletin.objects.all():
+        distance = user_l
