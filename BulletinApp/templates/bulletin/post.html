@@ -13,9 +13,8 @@
 <body>
     <!-- <div class="container"> -->
     <div class="row d-flex-vertical">
-        <div class="col-2 text-center side-nav flex-fill">
-            <!-- <div class="row justify-content-center align-items-center"> -->
-            <h1>Your Bulletins</h1>
+        <div class="col-1 text-center side-nav flex-fill">
+            <h3>Your Bulletins</h3>
             <a class="btn btn-primary" href="{% url 'bulletin:bulletin-new' %}">Create Bulletin</a>
 
             {% if bulletins %}
@@ -32,7 +31,7 @@
             <!-- </div> -->
 
         </div>
-        <div class="col-8">
+        <div class="col-10">
             <div class="bulletin-heading p-2">
                 <div class="row align-items-center h-100">
                     <div class="col-4">
@@ -49,8 +48,7 @@
             <div class="p-4 bulletin d-flex-vertical ">
                 {% if post %}
                 <div class="row">
-                    <p class="d-inline-block">{{ post.title }}</p>
-                    <p class="d-inline-block">Hello</p>
+                    <h1 class="d-inline-block">{{ post.title }}</h1>
                     <a class="btn btn-primary" href="{% url 'bulletin:post-edit' bulletin.id post.id%}">Edit Post</a>
                 </div>
                 <p class="lead p-0 m-0">{{ post.creator }}</p>
@@ -77,8 +75,8 @@
                 {% endif %}
             </div>
         </div>
-        <div class="col-2 side-nav text-center flex-fill">
-            <h1>Members</h1>
+        <div class="col-1 side-nav text-center flex-fill">
+            <h3>Members</h3>
             {% if members %}
             {% for member in members %}
             <div class="p-3 text-center ">

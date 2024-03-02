@@ -12,26 +12,26 @@
 
 <body class="h-100">
     <!-- <div class="container"> -->
-    <div class="row h-100">
-        <div class="col-2 text-center side-nav flex-fill mx-0">
-            <!-- <div class="row justify-content-center align-items-center"> -->
-            <h1>Your Bulletins</h1>
-            <a class="btn btn-primary" href="{% url 'bulletin:bulletin-new' %}">Create Bulletin</a>
-            {% if bulletins %}
-            {% for bulletin in bulletins %}
-
-            <a id="bulletin" class="bulletin-list-item" href="{% url 'bulletin:bulletin' bulletin.id %}">
-                <div class="p-3">
-                    <img src="{{ bulletin.bulletin_picture.url }}" class="rounded-circle img-fluid" />
-                    <p>{{ bulletin.title }}</p>
-                </div>
-            </a>
-            {% endfor %}
-            {% endif %}
-            <!-- </div> -->
-
-        </div>
-        <div class=" col-8 d-flex-vertical flex-fill mx-0">
+        <div class="row h-100">
+            <div class="col-1 text-center side-nav flex-fill">
+                <h3>Your Bulletins</h3>
+                <a class="btn btn-primary" href="{% url 'bulletin:bulletin-new' %}">Create Bulletin</a>
+    
+                {% if bulletins %}
+                {% for bulletin in bulletins %}
+    
+                <a id="bulletin" class="bulletin-list-item" href="{% url 'bulletin:bulletin' bulletin.id %}">
+                    <div class="p-3">
+                        <img src="{{ bulletin.bulletin_picture.url }}" class="rounded-circle img-fluid" />
+                        <p>{{ bulletin.title }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+                {% endif %}
+                <!-- </div> -->
+    
+            </div>
+        <div class=" col-10 d-flex-vertical flex-fill mx-0">
             <div class="bulletin-heading h-25 p-2">
                 <div class="row align-items-center h-100">
                     <div class="col-4">
@@ -52,8 +52,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-2 side-nav text-center flex-fill">
-            <h1>Members</h1>
+        <div class="col-1 side-nav text-center flex-fill">
+            <h3>Members</h3>
             {% if members %}
             {% for member in members %}
             <div class="p-3 text-center ">
