@@ -52,7 +52,6 @@ class Post(models.Model):
     creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     content = models.TextField()
     pub_date = models.DateTimeField()
-    hasEvent = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
