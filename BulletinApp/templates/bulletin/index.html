@@ -19,13 +19,17 @@
             <!-- </div> -->
 
         </div>
-        <div class="col-10">
-            <h1>Bulletins</h1>
+        <div class="col-8 bulletin">
+            <row class="bulletin-heading">
+                <h2>Location</h1>
+                <h1>Bulletin Name</h1>
+            </row>
+            
             {% if posts %}
             {% for post in posts %}
             <a id="post" class="bulletin" href="{% url 'bulletin:post' post.id %}">
 
-                <div class="m-3 p-2 bulletin">
+                <div class="m-3 p-2 bulletin-post">
                     <p class="lead p-0 m-0">{{ post.creator }}</p>
                     <h2 class="p-0 m-0">{{ post.title }}</h2>
                     <p>{{ post.pub_date }}</p>
@@ -34,6 +38,9 @@
             </a>
             {% endfor %}
             {% endif %}
+
+        </div>
+        <div class="col-2">
 
         </div>
     </div>

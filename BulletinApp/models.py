@@ -11,8 +11,8 @@ class CustomUser(AbstractUser):
     last_name = models.CharField(max_length=50)
     profile_picture = models.ImageField(upload_to='profile_pictures/')
     email = models.EmailField(unique=True)    
-    latitude = models.FloatField(blank=True)
-    longitude = models.FloatField(blank=True)
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
     # Add more fields as needed
 
     def save(self, *args, **kwargs):

@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
 from .models import *
+from django.contrib.auth import authenticate
 
 # Create your views here.
 def index(request):
@@ -23,11 +24,25 @@ def registerUser(request):
     except (KeyError, User.DoesNotExist):
         return
     else:
-        User.objects.create_user(firstName, email, password)
+        CustomUser.objects.create_user(first_name = firstName, last_name=lastName, email = email, password=password, username=email)
     return HttpResponseRedirect(reverse('bulletin:index'))
 
 def login(request):
     return render(request, 'bulletin/login')
+
+def loginUser(request):
+    try:
+        email = request.POST['email']
+        password = request.POST['password']
+    except (KeyError, User.DoesNotExist):
+        return
+    else:
+        user = authenticate(username=email, password=password)
+    if user is not None:
+        return HttpResponseRedirect(reverse('bulletin:index'))
+    else:
+        return HttpResponseRedirect(reverse('bulletin:login'))
+
 
 def post(request, id):
     post = get_object_or_404(Post, id__startswith=id)
